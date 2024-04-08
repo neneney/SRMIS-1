@@ -1,0 +1,134 @@
+body{
+    padding: 0px;
+    margin: 0px;
+}
+.add-section{
+    background-color: #194a07;
+    font-size: 20px;
+}
+.add-student-content{
+    margin: 50px 50px 20px 250px;
+    position: relative;
+}
+h3{
+    text-transform: uppercase;
+    font-size: 30px;
+    margin-bottom: 0px;
+}
+.location{
+    margin: 10px 0px 10px 0px;
+    background-color: rgb(244, 236, 236);
+    font-size: 18px;
+    height: 30px;
+    padding-top: 10px;
+    padding-left: 8px;
+    color:#4e4e4e;
+    border-radius: 5px;
+}
+
+.colored-text{
+    color: rgb(18, 50, 126);
+}
+.back-btn{
+    display: flex; 
+    align-items: center; 
+    padding-left: 13px;
+    padding-right: 13px;
+    color: #F5F7F8;
+    font-size: 15px;
+    text-transform: capitalize;
+    width: 80px;
+    background-color: #495E57;
+    height: 35px;
+    border-radius: 5px;
+    align-items: center;
+    border: none;
+    box-shadow: 3px 3px 10px #888888;
+    margin-top: 15px;
+}
+.section-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.add-contact{
+    height: 20px;
+    margin-right: 5px;
+}
+.add-new{
+    display: inline-block;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.back-btn img{
+    height: 15px;
+    margin-right: 3px;
+}
+.input-area label{
+    font-size: 18px;
+    margin: auto;
+}
+input[type="number"]{
+    display: inline-block;
+    width: 275px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    height: 30px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.input-area input[type=text] {
+    display: inline-block;
+    width: 400px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    height: 30px;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.input-area{
+    margin-bottom: 8px;
+}
+.input-area .gender-style{
+    margin-right: 25px;
+    margin-bottom: 8px;
+}
+.fillup-form{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.gender{
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 4px;
+    padding-left: 20px;
+}
+.Birthdate{
+    margin-left: 12px;
+    padding: 5px;
+    font-size: 15px;
+    border-radius: 4px;
+}
+.remarks{
+    position: relative;
+    top: 0;
+}
+.submit-btn{
+    background-color: #495E57;
+    position: relative;
+    left: 200x;
+    height: 32px;
+    width: 100px;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px #888888;;
+}

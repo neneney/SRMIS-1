@@ -1,0 +1,147 @@
+body{
+    padding: 0px;
+    margin: 0px;
+}
+h3{
+    text-transform: uppercase;
+    font-size: 30px;
+    margin-bottom: 0px;
+}
+.location{
+    margin: 10px 0px 10px 0px;
+    background-color: rgb(244, 236, 236);
+    font-size: 18px;
+    height: 30px;
+    padding-top: 10px;
+    padding-left: 8px;
+    color:#4e4e4e;
+    border-radius: 5px;
+}
+.colored-text{
+    color: rgb(18, 50, 126);
+}
+.back-btn{
+    display: flex; 
+    align-items: center; 
+    padding-left: 13px;
+    padding-right: 13px;
+    color: #F5F7F8;
+    font-size: 15px;
+    text-transform: capitalize;
+    width: 80px;
+    background-color: #495E57;
+    height: 35px;
+    border-radius: 5px;
+    align-items: center;
+    border: none;
+    box-shadow: 3px 3px 10px #888888;
+    margin-top: 15px;
+}
+.back-btn img{
+    height: 15px;
+    margin-right: 3px;
+}
+.total{ 
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+    text-transform: capitalize;
+    font-weight: 520;
+}
+
+
+
+.table{
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 0px;
+    margin-top: 10px;
+}
+table{
+    width: 100%;
+    margin-top: 0px;
+    text-align: center;
+    border-collapse: collapse;
+    font-size: 16px;
+    padding: 0px;
+}
+table, td, th{
+    border: 1px solid black;
+}
+tr th{
+    background-color: #495E57;
+    position: sticky;
+    top:0px;
+    margin-top: 0px;
+    border: 1px solid black;
+    
+}
+tr{
+    height: 50px;
+    
+}
+tr:nth-child(even) {
+    background-color: #e6e4e4;
+}
+.view-btn{
+    background-color: #F4CE14;
+}
+.edit-btn{
+    background-color: #45474B;
+}
+.delete-btn{
+    background-color: rgb(193, 123, 123);
+}
+.edit-btn, .view-btn, .delete-btn{
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    width: 50px;
+}
+.action-btn{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.text-box{
+    width: 80%;
+}
+.search-box{
+    width: 100%;
+    vertical-align: middle;
+    box-sizing: border-box;
+    height: 35px;
+    border-radius: 5px;
+    border-color: #e9e9e9;
+    border-style: inset;
+    text-transform: capitalize;
+    padding-left: 6px;
+}
+.mid-container{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.right-btn select{
+    width: 120px;
+    text-align: center;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    background-color: #495E57;
+    color: white;
+    font-size: 15px;
+}
+.add-student-btn{
+    width: 120px;
+    height: 35px;
+    vertical-align: middle;
+    border: none;
+    border-radius: 3px;
+    background-color: #495E57;
+    color: white;
+    font-size: 15px;
+}
+
+

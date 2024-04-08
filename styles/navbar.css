@@ -1,0 +1,261 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.user-img{
+    width: 50px;
+    border-radius: 100%;
+    border: 1px solid #eee;
+}
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 80px;
+    background-color: #12171e;
+    padding: .4rem .8rem;
+    transition: all 0.5s ease;
+    z-index: 250;
+}
+.sidebar.active ~ .main-content{
+    left: 250px;
+    width: calc(100%-250px);
+
+    
+}
+
+.sidebar.active{
+    width: 250px;
+}
+
+.sidebar #btn{
+    position: absolute;
+    color: white;
+    top: .4rem;
+    left: 50%;
+    font-size: 1.2rem;
+    line-height: 50px;
+    transform: translateX(-50%);
+}
+
+.sidebar.active #btn{
+    left: 90%;
+}
+
+.sidebar .top .logo{
+    color: #fff;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.sidebar.active .top .logo{
+    opacity: 1;
+}
+
+.top .logo i{
+    font-size: 2rem;
+    margin-right: 5px;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+
+}
+
+.user p{
+    color: #fff;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold{
+    font-weight: 600;
+}
+
+.sidebar p{
+    opacity: 0;
+}
+
+.sidebar.active p{
+    opacity: 1;
+}
+
+.sidebar ul li{
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 0.8rem auto;
+    line-height: 50px;
+
+}
+
+.sidebar ul li a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 0.8rem;
+}
+
+.sidebar ul li a:hover{
+    background-color: #fff;
+    color:#12171e;
+}
+
+.sidebar ul li a i{
+    min-width: 50px;
+    text-align: center;
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.sidebar .nav-item{
+    opacity: 0;
+    display: none;
+}
+
+.sidebar.active .nav-item{
+    opacity: 1;
+    display: block;
+}
+
+.sidebar ul li .tooltip{
+    position: absolute;
+    left: 135px;
+    width: 120px;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0.5rem 0.8rem rgba( 0, 0, 0, 0.2);
+    border-radius: 0.6rem;
+    line-height: 3rem;
+    z-index: 20;
+    display: none;
+    background-color: #12171e;
+    color: white
+}
+.sidebar ul li:hover .tooltip{
+    display: block;
+}
+
+.sidebar.active ul li .tooltip{
+    display: none;
+}
+
+.main-content{
+    z-index: 21;
+    position: relative;
+    transition: all 0.5s ease;
+    width: calc(100% - 80px);
+    left: 80px;
+    padding: 1rem;
+}
+
+
+
+.header{
+    height: 60px;
+    position:sticky;
+    flex: 1;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    background-color: #12171e;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    padding: 1rem;
+    z-index: 200;
+}
+.left-section{
+    transition: all 0.5s ease;
+    position: relative;
+    margin-left: 80px;
+}
+
+i{
+    position: relative;
+    margin-right: 8px;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 24px;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+.right-section{
+    position:absolute;
+    right: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.logout, p{
+    margin: 13px 13px 13px 0px;
+}
+.admin-icon{
+    height: 28px;
+}
+
+
+.bold{
+    text-decoration: underline;
+    margin-bottom: 0;
+}
+.admin{
+    margin: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

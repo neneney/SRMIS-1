@@ -1,0 +1,77 @@
+body{
+    padding: 0px;
+    margin: 0px;
+   
+}
+.dashboard-section{
+    background-color: #194a07;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 20px;
+}
+.dashboard-content h3{
+    text-transform: uppercase;
+    font-size: 30px;
+}
+.dashboard-content{ 
+    margin: 50px 50px 20px 250px;
+}
+.dashboard-content h1{
+    margin-top: 30px;
+    text-align: center;
+}
+.numbers{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 80px;
+    margin-top: 80px;
+}
+.mens{
+    background-image: url(../icons/men.png);
+    background-color: lightblue;
+    background-size: 110px;
+    background-repeat: no-repeat;
+    background-position: 10px;
+}
+.mens p, .womens p, .total p{
+    margin: 0px 8px 8px 0px;
+}
+.womens{
+    background-image: url(../icons/women.png);
+    background-color: lightpink;
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: 10px;
+}
+.total{
+    background-image: url(../icons/people.png);
+    background-color: lightblue;
+    background-size: 120px;
+    background-repeat: no-repeat;
+    background-position: 10px;
+}
+.mens, .womens, .total{
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+    flex-direction: column;
+    margin: 13px;
+    width: 300px;
+    height: 150px;
+    border-radius: 10px;
+}
+.p-mens, .p-womens, .p-total{
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.p-insystem{
+    text-decoration: overline;
+    text-transform: capitalize;
+    font-size: 20px;
+}
+.digit{
+    font-size: 30px;
+}
