@@ -113,7 +113,6 @@ $totalStudents = $totalMale + $totalFemale;
         <p class="location"><span class="colored-text">Dashboard / </span>Students</p>
         <button class="back-btn" onclick="history.back()" ><img src="../icons/back-button.png" alt=""><span>Back</span></button>
         <p class="total">Total number of students: [<?php echo $totalStudents?>]</p>  
-
         <div class="mid-container">
             <div class="text-box">
                 <form method="GET">
@@ -129,20 +128,10 @@ $totalStudents = $totalMale + $totalFemale;
             </select>
                 
             </div>
-            <button id = "addStudent" class="add-student-btn">Add Student</button>
-        </div>
+            <button id = "openAddStudentPopup" class="add-student-btn" onclick="toggleAdmissionForm()">Add Student</button>
+            </div>
 
-    <!-- <div id="addStudentPopup" class="student-form">
-        <span class="close" id="closeAddStudentPopup">&times;</span>
-        <h2>Add Student</h2>
-        <form id="addStudentForm" method="post">
-            <input type="text" name="firstName" placeholder="First Name" required>
-            <input type="text" name="middleName" placeholder="Middle Name" required>
-            <input type="text" name="lastName" placeholder="Last Name" required>
-            <button type="submit">Submit</button>
-        </form>
-    </div> -->
-        
+       
         <div class="table">
           <table>
             <tr>
@@ -176,48 +165,108 @@ $totalStudents = $totalMale + $totalFemale;
         </table>
         </div>
       </div>
+      <div class="admission-container">
+        <div class="addStudent"  id="admissionContainer">
+        <div class="ad-top-section">
+            <img src="../images/BJMP_Logo.png" alt="logo" class="bjmp-logo">
+            <h2>Student admission</h2>
+        </div>
+        <hr>
+        <form action="#" method="post" class="addForm">
+            <div class="input-area1">
+            <label for="">Student ID</label>
+            <input type="text" placeholder="Enter Student ID" required>
+            </div>
+            <div class="top-box">
+            <div class="input-area">
+                <label for="">First Name</label>
+                <input type="text" placeholder="Enter First Name" required>
+            </div>
+            <div class="input-area">
+                <label for="">Middle Name</label>
+                <input type="text" placeholder="Enter Middle Name" Required>
+            </div>
+            <div class="input-area">
+                <label for="">Last Name</label>
+                <input type="text" placeholder="Enter Last Name" required>
+            </div>
+            </div>
+            <div class="basic-info">
+            <div class="gender">
+                <p>Gender:</p>
+                <input name="gender" type="radio" value="male">
+                <label for="">Male</label>
+                <input name="gender" type="radio" value="female">
+                <label for="">Female</label>
+            </div>
+            <div class="Birthdate">
+                <label for="">Birthdate</label>
+                <input type="date" required>
+            </div>
+            </div>
+            <div class="address">
+                <label for="">Complete address</label>
+                <input type="text" name="" id="" placeholder="Enter Complete Address">
+            </div>
+            <div class="parent-box">
+            <label for="">Mother's Name</label>
+            <input type="text" placeholder="Enter Mother's Name" required>
+            <label for="">Occupation</label>
+            <input type="text" placeholder="Enter Occupation" required>        
+            </div>
+            <div class="parent-box">
+            <label for="">Father's Name</label>
+            <input type="text" placeholder="Enter Father's Name" required>
+            <label for="">Occupation</label>
+            <input type="text" placeholder="Enter Occupation" required>        
+            </div>
+            <div class="parent-box">
+            <label for="">Guidian's Name</label>
+            <input type="text" placeholder="Enter Guidian's Name" required>
+            <label for="">Phone Number</label>
+            <input type="text" placeholder="Enter Occupation" required>        
+            </div>
+            <div class="btns">
+            <button class="cancel-btn" onclick="closePopup()">Cancel</button>
+            <button class="submit-btn" type="submit">Submit</button>
+            </div>
+        </form>
+        </div>
+        </div>
+        </div>
+        
     <script src="../js/script.js"></script>
     <script>
         function deleteStudent(studentID) {
             if (confirm("Are you sure you want to delete this student?")) {
-                // Create a new XMLHttpRequest object
                 var xhr = new XMLHttpRequest();
 
-                // Configure it: GET-request for the delete-student.php file
+                
                 xhr.open("GET", "delete-student.php?id=" + studentID, true);
 
-                // Send the request
+                
                 xhr.send();
 
-                // This will be called after the response is received
+                
                 xhr.onload = function () {
                     if (xhr.status == 200) {
-                        // The request was successful
-                        //alert(xhr.responseText); // You can replace this with any action you want
                         location.reload();
                     } else {
-                        // There was an error
                         alert("Error deleting student record.");
                     }
                 };
             }
             }
-        var addStudentPopup = document.getElementById("addStudentPopup");
-        var openAddStudentPopupBtn = document.getElementById("openAddStudentPopup");
-        var closeAddStudentPopupBtn = document.getElementById("closeAddStudentPopup");
 
-        function openAddStudentPopup() {
-            addStudentPopup.style.display = "block";
+        function toggleAdmissionForm() {
+            var admissionForm = document.getElementById("admissionContainer");
+            admissionForm.style.opacity = "1";
+            admissionForm.style.visibility = "visible";
         }
-
-        function closeAddStudentPopup() {
-            addStudentPopup.style.display = "none";
+        function closePopup(){
+            var admissionForm = document.getElementById("admissionContainer")
+            admissionForm.style.opacity = "0";
         }
-
-
-        openAddStudentPopupBtn.addEventListener("click", openAddStudentPopup);
-        closeAddStudentPopupBtn.addEventListener("click", closeAddStudentPopup);
-
                 
     </script>
 </body>

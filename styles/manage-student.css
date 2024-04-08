@@ -37,10 +37,7 @@ h3{
     box-shadow: 3px 3px 10px #888888;
     margin-top: 15px;
 }
-.back-btn img{
-    height: 15px;
-    margin-right: 3px;
-}
+
 .total{ 
     text-align: center;
     margin-top: 15px;
@@ -143,5 +140,153 @@ tr:nth-child(even) {
     color: white;
     font-size: 15px;
 }
-
+  .ad-top-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .bjmp-logo{
+    height: 70px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  .addForm{
+    margin-top: 10px;
+  }
+  .addStudent{
+    color: white;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #12171e;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 9999;
+  }
+  .addStudent.show{
+    visibility: visible;
+    opacity: 1;
+  }
+  .addStudent h2{
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .top-box .input-area{
+    margin-right: 15px;
+    margin-bottom: 8px;
+  }
+  .top-box{
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+  }
+  .input-area label{
+    display: block;
+    margin-left: 2px;
+  }
+  .input-area1{
+    margin-bottom: 8px;
+  }
+  .top-box input[type="text"], .input-area1 input[type="text"]{
+    width: 250px;
+    height: 30px;
+    border-radius: 4px;
+    padding: 2px;
+  }
+  .basic-info p{
+    display: inline;
+    margin-right: 10px;
+  }
+  .basic-info{
+    display: flex;
+    margin-bottom: 8px;
+  }
+  .basic-info .gender{
+    flex: 1;
+  }
+  .basic-info .Birthdate{
+    flex: 2;
+  }
+  .Birthdate label{
+    margin-right: 8px;
+  }
+  .parent-box{
+    margin-right: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .parent-box input[type="text"]{
+    width: 250px;
+    height: 30px;
+    border-radius: 4px;
+    padding: 2px;
+  }
+  .address{
+    margin-bottom: 8px;
+  }
+  .address input[type="text"]{
+    width: 80%;
+    height: 30px;
+    border-radius: 4px;
+    padding: 2px;
+  }
+  .btns{
+    display: flex;
+    justify-content: center;
+  }
+  .cancel-btn{
+    margin: 8px;
+    background-color: rgb(98, 22, 22);
+    color: white;
+    height: 35px;
+    border: none;
+    border-radius: 8px;
+    width: 70px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .submit-btn{
+    margin: 8px;
+    background-color: rgb(57, 94, 57);
+    color: white;
+    height: 33px;
+    border: none;
+    border-radius: 8px;
+    width: 70px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .top-box{
+      flex-direction: column;
+      width: 100%;
+      margin-right: 0px;
+      padding: 0px;
+    }
+    .top-box input[type="text"]{
+      width: 100%;
+      margin-right: 0px;
+    }
+    .parent-box{
+      flex-direction: column;
+      align-items: start;
+    }
+    .parent-box input[type="text"], .input-area1 input[type="text"], .address input[type="text"]{
+      width: 100%;
+    }
+    .input-area1 label{
+      display: block;
+    }
+  
+  }
 
