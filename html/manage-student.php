@@ -34,6 +34,38 @@ $totalFemale = $rowFemale['totalFemale'];
 
 // Calculate the total number of students
 $totalStudents = $totalMale + $totalFemale;
+
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $studentID = $_POST['ID'];
+    $firstName = $_POST['first-name'];
+    $middleName = $_POST['middle-name'];
+    $lastName = $_POST['last-name'];
+    $gender = $_POST['gender'];
+    $birthdate = $_POST['birthdate'];
+    $address = $_POST['address'];
+    $motherName = $_POST['mother-name'];
+    $motherOccupation = $_POST['mother-occupation'];
+    $fatherName = $_POST['father-name'];
+    $fatherOccupation = $_POST['father-occupation'];
+    $guardianName = $_POST['guardian-name'];
+    $guardianPhone = $_POST['guardian-phone'];
+
+
+    $sql = "INSERT INTO students (ID, firstName, midName, surname, gender, birthdate, compAddress, motherName, motherOccupation, fatherName, 
+                                fatherOccupation, guardianName, guardianPhone) 
+                    VALUES ('$studentID', '$firstName', '$middleName', '$lastName', '$gender', '$birthdate',
+                    '$address', '$motherName', '$motherOccupation', '$fatherName', '$fatherOccupation', '$guardianName', '$guardianPhone')";
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('New student record added successfully')</script>";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+
+    // Close the database connection
+    $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -120,13 +152,14 @@ $totalStudents = $totalMale + $totalFemale;
                 </form>
             </div>
             <div class="right-btn">
-            <select name="cars" id="cars">
-                <option value="">Sort By</option>
-                <option value="volvo">Student ID</option>
-                <option value="saab">First name</option>
-                <option value="mercedes">Last Name</option>
-            </select>
-                
+            <form method="get">
+                <select name="sort_by" id="sort" onchange="this.form.submit()">
+                    <option value="">Sort By</option>
+                    <option value="ID">Student ID</option>
+                    <option value="firstName">First name</option>
+                    <option value="surname">Last Name</option>
+                </select>
+            </form>
             </div>
             <button id = "openAddStudentPopup" class="add-student-btn" onclick="toggleAdmissionForm()">Add Student</button>
             </div>
@@ -144,6 +177,17 @@ $totalStudents = $totalMale + $totalFemale;
                 <th>Action</th>
             </tr>
             <?php
+
+                $sortBy = isset($_GET['sort_by']) ? $_GET['sort_by'] : '';
+
+                // Modify the query based on the selected sorting option
+                $sql = "SELECT * FROM students";
+                if ($sortBy) {
+                    $sql .= " ORDER BY $sortBy";
+                }
+
+                $result = $conn->query($sql);
+
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . $row['ID'] . "</td>";
@@ -165,6 +209,7 @@ $totalStudents = $totalMale + $totalFemale;
         </table>
         </div>
       </div>
+
       <div class="admission-container">
         <div class="addStudent"  id="admissionContainer">
         <div class="ad-top-section">
@@ -172,62 +217,62 @@ $totalStudents = $totalMale + $totalFemale;
             <h2>Student admission</h2>
         </div>
         <hr>
-        <form action="#" method="post" class="addForm">
+        <form action="" method="post" class="addForm">
             <div class="input-area1">
             <label for="">Student ID</label>
-            <input type="text" placeholder="Enter Student ID" required>
+            <input name ="ID" type="number" placeholder="Enter Student ID" required>
             </div>
             <div class="top-box">
             <div class="input-area">
                 <label for="">First Name</label>
-                <input type="text" placeholder="Enter First Name" required>
+                <input class="input" name="first-name" type="text" placeholder="Enter First Name" required>
             </div>
             <div class="input-area">
                 <label for="">Middle Name</label>
-                <input type="text" placeholder="Enter Middle Name" Required>
+                <input class="input" name="middle-name" type="text" placeholder="Enter Middle Name" Required>
             </div>
             <div class="input-area">
                 <label for="">Last Name</label>
-                <input type="text" placeholder="Enter Last Name" required>
+                <input class="input" name="last-name" type="text" placeholder="Enter Last Name" required>
             </div>
             </div>
             <div class="basic-info">
             <div class="gender">
                 <p>Gender:</p>
-                <input name="gender" type="radio" value="male">
+                <input name="gender" type="radio" value="male" required>
                 <label for="">Male</label>
-                <input name="gender" type="radio" value="female">
+                <input name="gender" type="radio" value="female" required>
                 <label for="">Female</label>
             </div>
             <div class="Birthdate">
                 <label for="">Birthdate</label>
-                <input type="date" required>
+                <input name="birthdate" type="date" required>
             </div>
             </div>
             <div class="address">
                 <label for="">Complete address</label>
-                <input type="text" name="" id="" placeholder="Enter Complete Address">
+                <input name="address" type="text" name="" id="" placeholder="Enter Complete Address">
             </div>
             <div class="parent-box">
             <label for="">Mother's Name</label>
-            <input type="text" placeholder="Enter Mother's Name" required>
+            <input class="input" name="mother-name" type="text" placeholder="Enter Mother's Name" required>
             <label for="">Occupation</label>
-            <input type="text" placeholder="Enter Occupation" required>        
+            <input name="mother-occupation" type="text" placeholder="Enter Occupation" required>        
             </div>
             <div class="parent-box">
             <label for="">Father's Name</label>
-            <input type="text" placeholder="Enter Father's Name" required>
+            <input class="input" name="father-name" type="text" placeholder="Enter Father's Name" required>
             <label for="">Occupation</label>
-            <input type="text" placeholder="Enter Occupation" required>        
+            <input name="father-occupation" type="text" placeholder="Enter Occupation" required>        
             </div>
             <div class="parent-box">
             <label for="">Guidian's Name</label>
-            <input type="text" placeholder="Enter Guidian's Name" required>
+            <input name="guardian-name"  type="number" placeholder="Enter Guidian's Name" required>
             <label for="">Phone Number</label>
-            <input type="text" placeholder="Enter Occupation" required>        
+            <input name="guardian-phone" type="text" placeholder="Enter Occupation" required>        
             </div>
             <div class="btns">
-            <button class="cancel-btn" onclick="closePopup()">Cancel</button>
+            <button class="cancel-btn" type="reset" onclick="closePopup()">Cancel</button>
             <button class="submit-btn" type="submit">Submit</button>
             </div>
         </form>
@@ -237,6 +282,56 @@ $totalStudents = $totalMale + $totalFemale;
         
     <script src="../js/script.js"></script>
     <script>
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector('.addForm');
+            const submitButton = form.querySelector('.submit-btn');
+
+            submitButton.addEventListener('click', function(event) {
+                
+                event.preventDefault();
+
+                
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        
+                        form.reset();
+
+                        
+                        location.reload();
+                    } else {
+                        
+                        console.error('Error submitting form');
+                    }
+                })
+                .catch(error => console.error(error));
+            });
+        });
+
+
+
+        const inputElements = document.querySelectorAll('input');
+
+       
+        inputElements.forEach(function (inputElement) {
+            inputElement.addEventListener('input', function () {
+              
+                let inputValue = this.value;
+
+          
+                let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+
+               
+                this.value = capitalizedValue;
+            });
+        });
         function deleteStudent(studentID) {
             if (confirm("Are you sure you want to delete this student?")) {
                 var xhr = new XMLHttpRequest();

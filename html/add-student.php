@@ -189,29 +189,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     this.value = capitalizedValue;
                 });
             });
-        function updateDateTime() {
-            var currentDate = new Date();
-            
-            var dayIndex = currentDate.getDay();//returns a number based on day (0-7
-            var days = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
-            var currentDay = days[dayIndex];
-
-            var monthIndex = currentDate.getMonth();//returns a number based on month (0-11)
-            var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-            var currentMonth = months[monthIndex];
-
-            var d = currentDate.getDate();//returns current day
-            var year = currentDate.getFullYear();//returns 4 digit year
-
-
-            // var date = currentDate.toDateString(); returns string type of current date eg.; Tue jan 23 2024
-            var time = currentDate.toLocaleTimeString(); // returns time
-
-            document.getElementById("datetime").innerHTML = time;
-        }
-
-        updateDateTime(); 
-        setInterval(updateDateTime, 1000);//updates every  second
     </script>
 </body>
 </html>

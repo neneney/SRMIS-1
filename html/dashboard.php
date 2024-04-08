@@ -1,22 +1,22 @@
 <?php
 include("../php/conn.php");
 
-// Query to get the total number of male students
+
 $sqlMale = "SELECT COUNT(*) AS totalMale FROM students WHERE gender = 'male'";
 $resultMale = $conn->query($sqlMale);
 $rowMale = $resultMale->fetch_assoc();
 $totalMale = $rowMale['totalMale'];
 
-// Query to get the total number of female students
+
 $sqlFemale = "SELECT COUNT(*) AS totalFemale FROM students WHERE gender = 'female'";
 $resultFemale = $conn->query($sqlFemale);
 $rowFemale = $resultFemale->fetch_assoc();
 $totalFemale = $rowFemale['totalFemale'];
 
-// Calculate the total number of students
+
 $totalStudents = $totalMale + $totalFemale;
 
-// Close the database connection
+
 $conn->close();
 ?>
 
