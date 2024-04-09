@@ -13,3 +13,7 @@ btn.onclick = function () {
         main.style.width = 'calc(100% - 80px)';
     }
 };
+
+
+
+        
