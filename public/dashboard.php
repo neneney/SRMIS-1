@@ -94,9 +94,9 @@ $conn->close();
     </div>
     
     <div class="main-content">
-      <h3>Dashboard</h3>
+      <h1>Dashboard</h1>
       <hr>
-      <h1>Student Record Mangement Information System</h1>
+      <h3>Student Record Mangement Information System</h3>
       <div class="numbers">
         <div class="mens">
           <p class="digit"><?php echo $totalMale ?></p>

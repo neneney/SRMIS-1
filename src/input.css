@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .tw-span {
+      @apply tw-font-bold tw-capitalize;
+    }
+  }

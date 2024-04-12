@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Student</title>
-    <link rel="stylesheet" href="../styles/manage-student.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../src/manage-student.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../src/navbar.css?v=<?php echo time(); ?>">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="header">
       <div class="left-section">
-        <a href="dashboard.php">Bureau of Jail Management and Penology</a>
+        <a href="dashboard.php" class="">Bureau of Jail Management and Penology</a>
       </div>
       <div class="right-section">
         <i class="fi fi-rr-sign-out-alt"></i>
@@ -136,6 +136,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </div>
     
+    <div class="view-popup tw-bg-primary tw-text-white tw-p-20px tw-rounded-md tw-font-sans tw-text-lg" id="viewPopup">
+            <div class="flex tw-justify-center tw-items-center"> 
+                <img src="../images/BJMP_Logo.png" class="tw-w-20 tw-mr-4" alt="">
+                <h2 class="tw-uppercase">view info</h2>
+            </div>
+            <hr class="tw-mt-4 tw-mb-4">
+                <p class="tw-mb-3">STUDENT ID: <span class="tw-span">01923910293</span></p>
+                <p class="tw-mb-3">NAME: <span class="tw-span">Sample only output</span></p>
+                <p class="tw-mb-3">ADDRESS: <span class="tw-span">blk123 lot123 bellavista subd santiago general trias cavite</span></p>
+                <div class="grid tw-grid tw-grid-cols-2 tw-gap-3">
+                    <p> GENDER: <span class="tw-span">Male</span></p>
+                    <p>BIRTHDATE: <span class="tw-span">02/15/2002</span></p>
+                    <p>MOTHER'S NAME: <span class="tw-span">Lorem, ipsum dolor.</span></p>
+                    <p>OCCUPATION: <span class="tw-span">Lorem, ipsum dolor.</span></p>
+                    <p>FATHERS'S NAME: <span class="tw-span">Lorem, ipsum dolor. Lorem.</span></p>
+                    <p>OCCUPATION: <span class="tw-span">Lorem, ipsum dolor.</span></p>
+                    <p>GUARDIANS'S NAME: <span class="tw-span">Lorem, ipsum dolor.</span></p>
+                    <p>PHONE: <span class="tw-span">Lorem, ipsum dolor.</span></p>
+                </div>
+                <hr class="tw-mt-4 tw-mb-4">
+                <div class="tw-flex tw-justify-center">
+                    <button class="cancel-btn" type="reset" onclick="closeV()">Close</button>
+                    <button class="submit-btn" type="submit">Print</button>
+                </div>
+        </div>
+
     <div class="main-content">
         <h3>Students</h3>
         <p class="location"><span class="colored-text">Dashboard / </span>Students</p>
@@ -149,7 +175,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="right-btn">
             <form method="get">
-                <select name="sort_by" id="sort" onchange="this.form.submit()">
+                <select class="tw-bg-emerald-500" name="sort_by" id="sort" onchange="this.form.submit()">
                     <option value=""> <i class="fi fi-rr-sort-alt"></i> Sort By</option>
                     <option value="ID">Student ID</option>
                     <option value="firstName">First name</option>
@@ -157,10 +183,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </form>
             </div>
-            <button id = "openAddStudentPopup" class="add-student-btn" onclick="openAddstudent()">
-            <i class="fi fi-rr-user-add"></i>
-            Add Student
-            </button>
+            <button  id = "openAddStudentPopup" class=" add-student-btn" onclick="openAddstudent()">
+            <i class="fi fi-rr-user-add"></i>Add Student</button>
             </div>
 
        
@@ -195,16 +219,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo "<td>" . $row['surname'] . "</td>";
                     echo "<td>" . $row['gender'] . "</td>";
                     echo "<td>" . $row['guardianPhone'] . "</td>";
-                    echo "<td>";
+                    echo "<td class='tw-w-[250px]'>";
                     echo "<div class='action-btn'>";
-                    echo "<button class='view-btn'>View</button>";
-                    echo "<button class='edit-btn' onclick='editInfo(\"" . $row['ID'] . "\", \"" . $row['firstName'] 
-                    . "\", \"" . $row['midName'] . "\", \"" . $row['surname'] . "\", \"" . $row['gender'] . "\", \"" 
-                    . $row['birthdate'] . "\", \"" . $row['compAddress'] . "\", \"" . $row['motherName'] . "\", \"" . 
-                    $row['motherOccupation'] . "\", \"" . $row['fatherName'] . "\", \"" . $row['fatherOccupation'] . "\", \"" . 
-                    $row['guardianName'] . "\", \"" . $row['guardianPhone'] . "\")'>Edit</button>";
-
-                    echo "<button class='delete-btn' onclick='deleteStudent(" . $row['ID'] . ")'>Delete</button>";
+                        echo "<button class='tw-bg-emerald-500 tw-border-none tw-rounded-md tw-shadow-md tw-align-middle tw-w-16 tw-h-8 tw-text-white' onclick='showViewPopup()'><i class='fi fi-rr-eye tw-text-[20px] tw-m-0 tw-text-center'></i></button>";
+                        echo "<button class='tw-bg-slate-500 tw-border-none tw-rounded-md tw-shadow-md tw-align-middle   tw-w-16 tw-h-8 tw-text-white' onclick='editInfo(\"" . $row['ID'] . "\", \"" . $row['firstName'] 
+                        . "\", \"" . $row['midName'] . "\", \"" . $row['surname'] . "\", \"" . $row['gender'] . "\", \"" 
+                        . $row['birthdate'] . "\", \"" . $row['compAddress'] . "\", \"" . $row['motherName'] . "\", \"" . 
+                        $row['motherOccupation'] . "\", \"" . $row['fatherName'] . "\", \"" . $row['fatherOccupation'] . "\", \"" . 
+                        $row['guardianName'] . "\", \"" . $row['guardianPhone'] . "\")'><i class='fi fi-rr-edit tw-text-[18px]  tw-m-0 tw-text-center'></i></button>";
+                        echo "<button class='tw-bg-red-500 tw-border-none tw-rounded-md tw-shadow-md tw-m-0  tw-align-middle tw-w-16 tw-h-8 tw-text-white' onclick='deleteStudent(" . $row['ID'] . ")'><i class='fi fi-rr-trash tw-text-[20px]  tw-m-0 tw-text-center'></i></button>";
                     echo "</div>";
                     echo "</td>";
                     echo "</tr>";
@@ -212,15 +235,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?>
         </table>
         </div>
+        
       </div>
-
+                
       <div class="admission-container">
-        <div class="addStudent"  id="admissionContainer">
+        <div class="popup addStudent"  id="admissionContainer">
         <div class="ad-top-section">
             <img src="../images/BJMP_Logo.png" alt="logo" class="bjmp-logo">
             <h2 id=admission-header>Student admission</h2>
         </div>
-        <hr>
+        <hr class="tw-mt-4 tw-mb-4">
         <form action="" method="post" class="addForm">
             <div class="input-area1">
             <label for="">Student ID</label>
@@ -275,15 +299,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="">Phone Number</label>
             <input name="guardian-phone" type="number" placeholder="Enter Occupation" required>        
             </div>
+            <hr class="tw-mt-4 tw-mb-5">
             <div class="btns">
-            <button class="cancel-btn" type="reset" onclick="closePopup()">Cancel</button>
-            <button class="submit-btn" type="submit">Submit</button>
+                <button class="cancel-btn" type="reset" onclick="closePopup()">Cancel</button>
+                <button class="submit-btn" type="submit">Submit</button>
             </div>
         </form>
-        </div>
-        </div>
+        
         </div>
         
+        </div>
+       
+      
     <script src="../js/script.js"></script>
     <script src="../js/manage-student.js"></script>
 </body>

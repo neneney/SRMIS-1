@@ -29,28 +29,28 @@ body{
     margin-top: 80px;
 }
 .mens{
-    background-image: url(../icons/men.png);
+    background-image: url(../images/avatar.png);
     background-color: lightblue;
     background-size: 110px;
     background-repeat: no-repeat;
-    background-position: 10px;
+    background-position: 20px;
 }
 .mens p, .womens p, .total p{
     margin: 0px 8px 8px 0px;
 }
 .womens{
-    background-image: url(../icons/women.png);
+    background-image: url(../images/woman.png);
     background-color: lightpink;
     background-size: 100px;
     background-repeat: no-repeat;
-    background-position: 10px;
+    background-position: 20px;
 }
 .total{
-    background-image: url(../icons/people.png);
+    background-image: url(../images/student-with-graduation-cap.png);
     background-color: lightblue;
-    background-size: 120px;
+    background-size: 110px;
     background-repeat: no-repeat;
-    background-position: 10px;
+    background-position: 20px;
 }
 .mens, .womens, .total{
     display: flex;

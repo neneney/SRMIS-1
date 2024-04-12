@@ -3,10 +3,15 @@ function toggleAdmissionForm() {
     admissionForm.style.opacity = "1";
     admissionForm.style.visibility = "visible";
 }
-function closePopup(){
+function closePopup() {
     var admissionForm = document.getElementById("admissionContainer")
     admissionForm.style.opacity = "0";
+
+    var viewPopup = document.getElementById('viewPopup')
+    viewPopup.style.opacity = "0";
+    viewPopup.style.visibility = "hidden";
 }
+
 
 function editInfo(studentID, firstName, middleName, lastName, gender, birthdate, address, motherName, motherOccupation, fatherName, fatherOccupation, guardianName, guardianPhone) {
     var header = document.getElementById('admission-header');
@@ -145,4 +150,15 @@ function deleteStudent(studentID) {
         };
     }
     }
-
+    function showViewPopup(){
+        var viewPopup = document.getElementById('viewPopup')
+        viewPopup.style.opacity = "1";
+        viewPopup.style.visibility = "visible";
+    }
+    function closeV(){
+        var viewPopup = document.getElementById('viewPopup')
+        viewPopup.style.opacity = "0";
+    }
+    
+    
+    

@@ -105,6 +105,7 @@ tr:nth-child(even) {
 .action-btn{
     display: flex;
     justify-content: space-evenly;
+    
 }
 
 .text-box{
@@ -173,10 +174,10 @@ tr:nth-child(even) {
   }
   .addStudent{
     color: white;
+    transition: visibility 0s, opacity 0.3s ease-in-out;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s, opacity 0.3s ease-in-out;
-    position: fixed;
+    position: fixed; 
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -186,10 +187,21 @@ tr:nth-child(even) {
     padding: 20px;
     z-index: 9999;
   }
-  .addStudent.show{
+  /* .addStudent.show, #viewPopup.show{
     visibility: visible;
     opacity: 1;
-  }
+  } */
+  .view-popup{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; 
+    transition: visibility 0s, opacity 0.3s ease-in-out;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 99;
+}
   .addStudent h2{
     margin-bottom: 10px;
     text-transform: uppercase;
@@ -290,6 +302,10 @@ tr:nth-child(even) {
     text-transform: uppercase;
   }
   
+  .grid span, .grid p{
+    margin: 0px;
+    padding: 0;
+  }
   @media screen and (max-width: 768px) {
     .top-box{
       flex-direction: column;
