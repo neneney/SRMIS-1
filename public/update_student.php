@@ -20,6 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Update the student record in the database
     $sql = "UPDATE students SET firstName='$firstName', midName='$middleName', surname='$lastName', gender='$gender', birthdate='$birthdate', compAddress='$address', motherName='$motherName', motherOccupation='$motherOccupation', fatherName='$fatherName', fatherOccupation='$fatherOccupation', guardianName='$guardianName', guardianPhone='$guardianPhone' WHERE ID='$studentID'";
+
+    
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('Student information updated successfully')</script>";
     } else {

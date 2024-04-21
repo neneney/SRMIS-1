@@ -1,67 +1,61 @@
 <?php
 include("../php/conn.php");
 
-$sql = "SELECT * FROM students";
-$result = $conn->query($sql);
 
-if(isset($_GET['search'])) {
-  $searchTerm = $_GET['search'];
- 
-  $sql = "SELECT * FROM students WHERE 
-          ID LIKE '%$searchTerm%' OR 
-          firstName LIKE '%$searchTerm%' OR 
-          midName LIKE '%$searchTerm%' OR 
-          surname LIKE '%$searchTerm%' OR 
-          gender LIKE '%$searchTerm%' OR 
-          guardianPhone LIKE '%$searchTerm%'";
-  $result = $conn->query($sql);
+// Check if search term is set and not empty
+if(isset($_GET['search']) && !empty($_GET['search'])) {
+    // Sanitize the search term
+    $searchTerm = htmlspecialchars($_GET['search']);
+    
+    // Prepare the SQL statement with a parameterized query to prevent SQL injection
+    $sql = "SELECT * FROM students WHERE 
+            ID LIKE '%$searchTerm%' OR 
+            firstName LIKE '%$searchTerm%' OR 
+            midName LIKE '%$searchTerm%' OR 
+            surname LIKE '%$searchTerm%' OR 
+            gender LIKE '%$searchTerm%' OR 
+            guardianPhone LIKE '%$searchTerm%'";
+    
+    // Execute the query
+    $result = $conn->query($sql);
+    
+} else {
+    // If search term is not set, fetch all students
+    $sql = "SELECT * FROM students";
+    $result = $conn->query($sql);
 }
 
+if(isset($_GET['sort_by']) && !empty($_GET['sort_by'])){
+    
+}
+
+
+
+// Check for errors in SQL query
+if(!$result) {
+    // Handle error (e.g., log it, display an error message)
+    echo "Error executing SQL query: " . $conn->error;
+}
+
+// Count total male students
 $sqlMale = "SELECT COUNT(*) AS totalMale FROM students WHERE gender = 'male'";
 $resultMale = $conn->query($sqlMale);
 $rowMale = $resultMale->fetch_assoc();
 $totalMale = $rowMale['totalMale'];
 
-
+// Count total female students
 $sqlFemale = "SELECT COUNT(*) AS totalFemale FROM students WHERE gender = 'female'";
 $resultFemale = $conn->query($sqlFemale);
 $rowFemale = $resultFemale->fetch_assoc();
 $totalFemale = $rowFemale['totalFemale'];
 
-
+// Calculate total number of students
 $totalStudents = $totalMale + $totalFemale;
 
+// Close prepared statement
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form data
-    $studentID = $_POST['ID'];
-    $firstName = $_POST['first-name'];
-    $middleName = $_POST['middle-name'];
-    $lastName = $_POST['last-name'];
-    $gender = $_POST['gender'];
-    $birthdate = $_POST['birthdate'];
-    $address = $_POST['address'];
-    $motherName = $_POST['mother-name'];
-    $motherOccupation = $_POST['mother-occupation'];
-    $fatherName = $_POST['father-name'];
-    $fatherOccupation = $_POST['father-occupation'];
-    $guardianName = $_POST['guardian-name'];
-    $guardianPhone = $_POST['guardian-phone'];
-
-
-    $sql = "INSERT INTO students (ID, firstName, midName, surname, gender, birthdate, compAddress, motherName, motherOccupation, fatherName, 
-                                fatherOccupation, guardianName, guardianPhone) 
-                    VALUES ('$studentID', '$firstName', '$middleName', '$lastName', '$gender', '$birthdate',
-                    '$address', '$motherName', '$motherOccupation', '$fatherName', '$fatherOccupation', '$guardianName', '$guardianPhone')";
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('New student record added successfully')</script>";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
-    $conn->close();
-}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -75,6 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../src/tailwind.css">
     
+    <style>
+    [x-cloak] {
+      display: none;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -142,18 +142,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h2 class="tw-uppercase">view info</h2>
             </div>
             <hr class="tw-mt-4 tw-mb-4">
-                <p class="tw-mb-3">STUDENT ID: <span class="tw-span">01923910293</span></p>
-                <p class="tw-mb-3">NAME: <span class="tw-span">Sample only output</span></p>
-                <p class="tw-mb-3">ADDRESS: <span class="tw-span">blk123 lot123 bellavista subd santiago general trias cavite</span></p>
+                <p class="tw-mb-3">STUDENT ID: <span class="tw-span" id="student_id">01923910293</span></p>
+                <p class="tw-mb-3">NAME: <span class="tw-span" id="student_name"></span></p>
+                <p class="tw-mb-3">ADDRESS: <span class="tw-span" id="student_address">blk123 lot123 bellavista subd santiago general trias cavite</span></p>
                 <div class="grid tw-grid tw-grid-cols-2 tw-gap-3">
-                    <p> GENDER: <span class="tw-span">Male</span></p>
-                    <p>BIRTHDATE: <span class="tw-span">02/15/2002</span></p>
-                    <p>MOTHER'S NAME: <span class="tw-span">Lorem, ipsum dolor.</span></p>
-                    <p>OCCUPATION: <span class="tw-span">Lorem, ipsum dolor.</span></p>
-                    <p>FATHERS'S NAME: <span class="tw-span">Lorem, ipsum dolor. Lorem.</span></p>
-                    <p>OCCUPATION: <span class="tw-span">Lorem, ipsum dolor.</span></p>
-                    <p>GUARDIANS'S NAME: <span class="tw-span">Lorem, ipsum dolor.</span></p>
-                    <p>PHONE: <span class="tw-span">Lorem, ipsum dolor.</span></p>
+                    <p> GENDER: <span class="tw-span" id="student_gender">Male</span></p>
+                    <p>BIRTHDATE: <span class="tw-span" id="student_birthdate">02/15/2002</span></p>
+                    <p>MOTHER'S NAME: <span class="tw-span" id="mother_name">Lorem, ipsum dolor.</span></p>
+                    <p>OCCUPATION: <span class="tw-span" id="mother_occu">Lorem, ipsum dolor.</span></p>
+                    <p>FATHERS'S NAME: <span class="tw-span" id="father_name">Lorem, ipsum dolor. Lorem.</span></p>
+                    <p>OCCUPATION: <span class="tw-span" id="father_occu">Lorem, ipsum dolor.</span></p>
+                    <p>GUARDIANS'S NAME: <span class="tw-span" id="guardian_name">Lorem, ipsum dolor.</span></p>
+                    <p>PHONE: <span class="tw-span" id="guardian_phone">Lorem, ipsum dolor.</span></p>
                 </div>
                 <hr class="tw-mt-4 tw-mb-4">
                 <div class="tw-flex tw-justify-center">
@@ -164,11 +164,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="main-content">
         <h3>Students</h3>
-        <p class="location"><span class="colored-text">Dashboard / </span>Students</p>
-        <button class="back-btn" onclick="history.back()" ><i class="fi fi-rr-arrow-small-left"></i><span>Back</span></button>
+        <p class="location"><span class="colored-text">SRMIS / </span>Manage Students</p>
         <p class="total">Total number of students: [<?php echo $totalStudents?>]</p>  
         <div class="mid-container">
-            <div class="text-box">
+            <div class=" text-box ">
                 <form method="GET">
                     <input class="search-box" type="search" name="search" placeholder="Search students" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
                 </form>
@@ -183,9 +182,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </select>
             </form>
             </div>
-            <button  id = "openAddStudentPopup" class=" add-student-btn" onclick="openAddstudent()">
+            <button  id = "add-student-btn" class=" add-student-btn" >
             <i class="fi fi-rr-user-add"></i>Add Student</button>
-            </div>
+        </div>
 
        
         <div class="table">
@@ -201,38 +200,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </tr>
             <?php
 
-                $sortBy = isset($_GET['sort_by']) ? $_GET['sort_by'] : '';
 
-                // Modify the query based on the selected sorting option
-                $sql = "SELECT * FROM students";
-                if ($sortBy) {
-                    $sql .= " ORDER BY $sortBy";
-                }
-
-                $result = $conn->query($sql);
-
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row['ID'] . "</td>";
-                    echo "<td>" . $row['firstName'] . "</td>";
-                    echo "<td>" . $row['midName'] . "</td>";
-                    echo "<td>" . $row['surname'] . "</td>";
-                    echo "<td>" . $row['gender'] . "</td>";
-                    echo "<td>" . $row['guardianPhone'] . "</td>";
-                    echo "<td class='tw-w-[250px]'>";
-                    echo "<div class='action-btn'>";
-                        echo "<button class='tw-bg-emerald-500 tw-border-none tw-rounded-md tw-shadow-md tw-align-middle tw-w-16 tw-h-8 tw-text-white' onclick='showViewPopup()'><i class='fi fi-rr-eye tw-text-[20px] tw-m-0 tw-text-center'></i></button>";
-                        echo "<button class='tw-bg-slate-500 tw-border-none tw-rounded-md tw-shadow-md tw-align-middle   tw-w-16 tw-h-8 tw-text-white' onclick='editInfo(\"" . $row['ID'] . "\", \"" . $row['firstName'] 
-                        . "\", \"" . $row['midName'] . "\", \"" . $row['surname'] . "\", \"" . $row['gender'] . "\", \"" 
-                        . $row['birthdate'] . "\", \"" . $row['compAddress'] . "\", \"" . $row['motherName'] . "\", \"" . 
-                        $row['motherOccupation'] . "\", \"" . $row['fatherName'] . "\", \"" . $row['fatherOccupation'] . "\", \"" . 
-                        $row['guardianName'] . "\", \"" . $row['guardianPhone'] . "\")'><i class='fi fi-rr-edit tw-text-[18px]  tw-m-0 tw-text-center'></i></button>";
+                if(!$result) {
+                    // Handle error (e.g., log it, display an error message)
+                    echo "Error executing SQL query: " . $conn->error;
+                } else {
+                    // Iterate through the result set to display data
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row['ID'] . "</td>";
+                        echo "<td>" . $row['firstName'] . "</td>";
+                        echo "<td>" . $row['midName'] . "</td>";
+                        echo "<td>" . $row['surname'] . "</td>";
+                        echo "<td>" . $row['gender'] . "</td>";
+                        echo "<td>" . $row['guardianPhone'] . "</td>";
+                        echo "<td class='tw-w-[250px]'>";
+                        echo "<div class='action-btn'>";
+                        echo "<button id='view-btn'  class='tw-bg-emerald-500 tw-border-none tw-rounded-md tw-shadow-md tw-align-middle tw-w-16 tw-h-8 tw-text-white'
+                        data-id='" . $row['ID'] . "' 
+                        data-firstname='" . $row['firstName'] . "' 
+                        data-midname='" . $row['midName'] . "' 
+                        data-surname='" . $row['surname'] . "' 
+                        data-gender='" . $row['gender'] . "' 
+                        data-birthdate='" . $row['birthdate'] . "' 
+                        data-compaddress='" . $row['compAddress'] . "' 
+                        data-mothername='" . $row['motherName'] . "' 
+                        data-motheroccupation='" . $row['motherOccupation'] . "' 
+                        data-fathername='" . $row['fatherName'] . "' 
+                        data-fatheroccupation='" . $row['fatherOccupation'] . "' 
+                        data-guardianname='" . $row['guardianName'] . "' 
+                        data-guardianphone='" . $row['guardianPhone'] . "'> 
+                        <i class='fi fi-rr-eye tw-text-[20px] tw-m-0 tw-text-center'></i></button>";
+                        echo "<button id='edit-btn' class='tw-bg-slate-500 tw-border-none tw-rounded-md tw-shadow-md tw-align-middle tw-w-16 tw-h-8 tw-text-white' 
+                        data-id='" . $row['ID'] . "' 
+                        data-firstname='" . $row['firstName'] . "' 
+                        data-midname='" . $row['midName'] . "' 
+                        data-surname='" . $row['surname'] . "' 
+                        data-gender='" . $row['gender'] . "' 
+                        data-birthdate='" . $row['birthdate'] . "' 
+                        data-compaddress='" . $row['compAddress'] . "' 
+                        data-mothername='" . $row['motherName'] . "' 
+                        data-motheroccupation='" . $row['motherOccupation'] . "' 
+                        data-fathername='" . $row['fatherName'] . "' 
+                        data-fatheroccupation='" . $row['fatherOccupation'] . "' 
+                        data-guardianname='" . $row['guardianName'] . "' 
+                        data-guardianphone='" . $row['guardianPhone'] . "'>
+                <i class='fi fi-rr-edit tw-text-[18px] tw-m-0 tw-text-center'></i>
+              </button>";
                         echo "<button class='tw-bg-red-500 tw-border-none tw-rounded-md tw-shadow-md tw-m-0  tw-align-middle tw-w-16 tw-h-8 tw-text-white' onclick='deleteStudent(" . $row['ID'] . ")'><i class='fi fi-rr-trash tw-text-[20px]  tw-m-0 tw-text-center'></i></button>";
-                    echo "</div>";
-                    echo "</td>";
-                    echo "</tr>";
+                        echo "</div>";
+                        echo "</td>";
+                        echo "</tr>";
+                      
+                    }
                 }
-                ?>
+                
+                ?>  
         </table>
         </div>
         
@@ -245,73 +268,145 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2 id=admission-header>Student admission</h2>
         </div>
         <hr class="tw-mt-4 tw-mb-4">
-        <form action="" method="post" class="addForm">
+        <form action="add_student.php" method="post" class="addForm">
             <div class="input-area1">
             <label for="">Student ID</label>
-            <input name ="ID" type="number" placeholder="Enter Student ID" required>
+            <input id ="ID" name ="ID" type="number" placeholder="Enter Student ID" required>
             </div>
             <div class="top-box">
             <div class="input-area">
                 <label for="">First Name</label>
-                <input class="input" name="first-name" type="text" placeholder="Enter First Name" required>
+                <input id="first-name" class="input" name="first-name" type="text" placeholder="Enter First Name" required>
             </div>
             <div class="input-area">
                 <label for="">Middle Name</label>
-                <input class="input" name="middle-name" type="text" placeholder="Enter Middle Name" Required>
+                <input id="middle-name" class="input" name="middle-name" type="text" placeholder="Enter Middle Name" Required>
             </div>
             <div class="input-area">
                 <label for="">Last Name</label>
-                <input class="input" name="last-name" type="text" placeholder="Enter Last Name" required>
+                <input id="last-name" class="input" name="last-name" type="text" placeholder="Enter Last Name" required>
             </div>
             </div>
             <div class="basic-info">
             <div class="gender">
                 <p>Gender:</p>
-                <input name="gender" type="radio" value="Male" required>
+                <input id="gender" name="gender" type="radio" value="Male" required>
                 <label for="">Male</label>
-                <input name="gender" type="radio" value="Female" required>
+                <input id="gender" name="gender" type="radio" value="Female" required>
                 <label for="">Female</label>
             </div>
             <div class="Birthdate">
                 <label for="">Birthdate</label>
-                <input name="birthdate" type="date" required>
+                <input id="birthdate" name="birthdate" type="date" class="input" required>
             </div>
             </div>
-            <div class="address">
-                <label for="">Complete address</label>
-                <input name="address" type="text" name="" id="" placeholder="Enter Complete Address">
-            </div>
-            <div class="parent-box">
+            
+            
+            <div class="grid-info-box">
+            
+            <label class="add-label"for="">Complete address</label>
+            <input id="address" class="add-input" name="address" type="text" name="" id="" placeholder="Enter Complete Address">
+
             <label for="">Mother's Name</label>
-            <input class="input" name="mother-name" type="text" placeholder="Enter Mother's Name" required>
+            <input id="mother-name" class="input" name="mother-name" type="text" placeholder="Enter Mother's Name" required>
             <label for="">Occupation</label>
-            <input name="mother-occupation" type="text" placeholder="Enter Occupation" required>        
-            </div>
-            <div class="parent-box">
+            <input id="mother-occupation" name="mother-occupation" type="text" placeholder="Enter Occupation" required>        
+            
             <label for="">Father's Name</label>
-            <input class="input" name="father-name" type="text" placeholder="Enter Father's Name" required>
+            <input id="father-name" class="input" name="father-name" type="text" placeholder="Enter Father's Name" required>
             <label for="">Occupation</label>
-            <input name="father-occupation" type="text" placeholder="Enter Occupation" required>        
-            </div>
-            <div class="parent-box">
-            <label for="">Guidian's Name</label>
-            <input name="guardian-name"  type="text" placeholder="Enter Guidian's Name" required>
+            <input id="father-occupation" name="father-occupation" type="text" placeholder="Enter Occupation" required>        
+            
+            <label for="">Guardian's Name</label>
+            <input id="guardian-name" name="guardian-name"  type="text" placeholder="Enter Guardian's Name" required>
             <label for="">Phone Number</label>
-            <input name="guardian-phone" type="number" placeholder="Enter Occupation" required>        
+            <input id = "guardian-phone" name="guardian-phone" type="number" placeholder="Enter Phone Number" required>        
+            </div>
+            <div class="alert">Please enter a valid 11-digit phone number.</div>
+            <hr class="tw-mt-4 tw-mb-5">
+            <div class="btns">
+                <button class="cancel-btn" type="reset" id="cancel-btn">Cancel</button>
+                <input name="submit-btn" class="submit-btn"  type="submit">
+            </div>
+            </form>
+            </div>
+            </div>
+
+        <div class="admission-container">
+        <div class="popup editStudent"  id="editContainer">
+        <div class="ad-top-section">
+            <img src="../images/BJMP_Logo.png" alt="logo" class="bjmp-logo">
+            <h2 id=admission-header>Edit Info</h2>
+        </div>
+        <hr class="tw-mt-4 tw-mb-4">
+        <form action="update_student.php" method="post" class="addForm">
+            <div class="input-area1">
+            <label for="">Student ID</label>
+            <input name ="edit-ID" type="number" placeholder="Enter Student ID" required>
+            </div>
+            <div class="top-box">
+            <div class="input-area">
+                <label for="">First Name</label>
+                <input class="input" name="edit-first-name" type="text" placeholder="Enter First Name" required>
+            </div>
+            <div class="input-area">
+                <label for="">Middle Name</label>
+                <input class="input" name="edit-middle-name" type="text" placeholder="Enter Middle Name" Required>
+            </div>
+            <div class="input-area">
+                <label for="">Last Name</label>
+                <input class="input" name="edit-last-name" type="text" placeholder="Enter Last Name" required>
+            </div>
+            </div>
+            <div class="basic-info">
+            <div class="gender">
+                <p>Gender:</p>
+                <input name="edit-gender" type="radio" value="Male" required>
+                <label for="">Male</label>
+                <input name="edit-gender" type="radio" value="Female" required>
+                <label for="">Female</label>
+            </div>
+            <div class="Birthdate">
+                <label for="">Birthdate</label>
+                <input name="edit-birthdate" type="date" class="input" required>
+            </div>
+            </div>
+            
+            <div class="grid-info-box">
+
+            <label class="add-label" for="">Complete address</label>
+            <input class="add-input" name="edit-address" type="text" id="" placeholder="Enter Complete Address">
+
+            <label for="">Mother's Name</label>
+            <input class="input" name="edit-mother-name" type="text" placeholder="Enter Mother's Name" required>
+            <label for="">Occupation</label>
+            <input name="edit-mother-occupation" type="text" placeholder="Enter Occupation" required>        
+            
+            <label for="">Father's Name</label>
+            <input class="input" name="edit-father-name" type="text" placeholder="Enter Father's Name" required>
+            <label for="">Occupation</label>
+            <input name="edit-father-occupation" type="text" placeholder="Enter Occupation" required>        
+            
+            
+            <label for="">Guardian's Name</label>
+            <input name="edit-guardian-name"  type="text" placeholder="Enter Guardian's Name" required>
+            <label for="">Phone Number</label>
+            <input name="edit-guardian-phone" type="number" placeholder="Enter Occupation" required>        
             </div>
             <hr class="tw-mt-4 tw-mb-5">
             <div class="btns">
-                <button class="cancel-btn" type="reset" onclick="closePopup()">Cancel</button>
-                <button class="submit-btn" type="submit">Submit</button>
+                <button class="cancel-btn" type="reset" id="edit-cancel-btn">Cancel</button>
+                <input class="submit-btn"  type="submit">
             </div>
         </form>
         
         </div>
         
         </div>
-       
-      
+
     <script src="../js/script.js"></script>
     <script src="../js/manage-student.js"></script>
+    
+
 </body>
 </html>
