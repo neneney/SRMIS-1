@@ -68,7 +68,7 @@ editbtns.forEach(editbtn => {
                         closeEditContainer();
                     }
         })
-        // Call toggleEditContainer with the extracted data
+        
         editInfo(ID, firstName, midName, surname, gender, birthdate, compAddress, motherName, motherOccupation, fatherName, fatherOccupation, guardianName, guardianPhone);
         
         e.stopPropagation();
@@ -124,16 +124,60 @@ function toggleEditContainer() {
     editContainer.style.opacity = "1";
     editContainer.style.visibility = "visible";
 
-    var editcancel = document.getElementById('edit-cancel-btn');
-    editcancel.addEventListener('click', cancelClickListener);
+    var editCancel = document.getElementById('edit-cancel-btn');
+    editCancel.addEventListener('click', cancelClickListener);
 
     function cancelClickListener() {
         editContainer.style.opacity = "0";
         setTimeout(function() {
             editContainer.style.visibility = "hidden";
         }, 300); // Adjust the timeout duration if needed
-        editcancel.removeEventListener('click', cancelClickListener);
+        editCancel.removeEventListener('click', cancelClickListener);
     }
+    
+    
+    
+    const editForm = document.querySelector('.editForm');
+    editForm.addEventListener('submit', e => {
+        e.preventDefault();
+
+        let formData = new FormData(editForm);
+        let alertMessage = document.querySelectorAll('.alert');
+
+        let guardianPhone = document.getElementsByName("edit-guardian-phone")[0].value ;
+         if (guardianPhone.length !== 11) {
+                alertMessage[1].style.display = "flex";
+                alertMessage[1].innerHTML = "Phone number must be 11 digits long";
+                setTimeout(function() {
+                    alertMessage[1].style.display = "none";
+                }, 2000); 
+            } else {
+                fetch('update_student.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Handle successful response
+                    alertMessage[1].style.display = "flex";
+                    alertMessage[1].style.backgroundColor = "#1B4D3E";
+                    alertMessage[1].innerHTML = "Student edited successfully";
+                    setTimeout(function() {
+                        location.reload(); // Reload page after 800 milliseconds
+                    }, 800);
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+            }
+
+    })
     
 }
 
@@ -141,7 +185,6 @@ function toggleEditContainer() {
 function editInfo(studentID, firstName, middleName, lastName, gender, birthdate, address, motherName, motherOccupation, fatherName, fatherOccupation, guardianName, guardianPhone) {
     closeAdmissionForm();
     closeV();
-    var header = document.getElementById('admission-header');
     document.querySelector("input[name='edit-ID']").readOnly = true;
     document.getElementsByName("edit-ID")[0].value = studentID;
     document.getElementsByName("edit-first-name")[0].value = firstName;
@@ -161,7 +204,7 @@ function editInfo(studentID, firstName, middleName, lastName, gender, birthdate,
     document.getElementsByName("edit-father-occupation")[0].value = fatherOccupation;
     document.getElementsByName("edit-guardian-name")[0].value = guardianName;
     document.getElementsByName("edit-guardian-phone")[0].value = guardianPhone;
-    
+
     toggleEditContainer();
 }
 
@@ -169,7 +212,6 @@ function editInfo(studentID, firstName, middleName, lastName, gender, birthdate,
 
 
 function closeV(){
-
     var viewPopup = document.getElementById('viewPopup')
     viewPopup.style.opacity = "0";
     viewPopup.style.visibility = "hidden";
@@ -178,8 +220,6 @@ function closeV(){
 
 
 const inputElements = document.querySelectorAll('input');
-
-
 inputElements.forEach(function (inputElement) {
     inputElement.addEventListener('input', function () {
       
@@ -192,6 +232,7 @@ inputElements.forEach(function (inputElement) {
         this.value = capitalizedValue;
     });
 });
+
 function deleteStudent(studentID) {
     if (confirm("Are you sure you want to delete this student?")) {
         var xhr = new XMLHttpRequest();
@@ -214,46 +255,45 @@ function deleteStudent(studentID) {
     }
 
 
-    var viewbtns = document.querySelectorAll('#view-btn')
-        var viewPopup = document.querySelector('#viewPopup');
-
-        viewbtns.forEach(viewbtn => {
-        viewbtn.addEventListener("click", e => {
-        closeAdmissionForm();
-        closeEditContainer();
-        var ID = viewbtn.dataset.id;
-        var firstName = viewbtn.dataset.firstname;
-        var midName = viewbtn.dataset.midname;
-        var surname = viewbtn.dataset.surname;
-        var gender = viewbtn.dataset.gender;
-        var birthdate = viewbtn.dataset.birthdate;
-        var compAddress = viewbtn.dataset.compaddress;
-        var motherName = viewbtn.dataset.mothername;
-        var motherOccupation = viewbtn.dataset.motheroccupation;
-        var fatherName = viewbtn.dataset.fathername;
-        var fatherOccupation = viewbtn.dataset.fatheroccupation;
-        var guardianName = viewbtn.dataset.guardianname;
-        var guardianPhone = viewbtn.dataset.guardianphone;
-
-
-        viewPopup.style.opacity = "1";
-        viewPopup.style.visibility = "visible";
-
-        document.getElementById('student_id').innerHTML = ID;
-        document.getElementById('student_name').innerHTML = firstName + " " + midName + " " + surname;
-        document.getElementById('student_address').innerHTML = compAddress;
-        document.getElementById('student_gender').innerHTML = gender;
-        document.getElementById('student_birthdate').innerHTML = birthdate;
-        document.getElementById('mother_name').innerHTML = motherName;
-        document.getElementById('mother_occu').innerHTML = motherOccupation;
-        document.getElementById('father_name').innerHTML = fatherName;
-        document.getElementById('father_occu').innerHTML = fatherOccupation;
-        document.getElementById('guardian_name').innerHTML = guardianName;
-        document.getElementById('guardian_phone').innerHTML = guardianPhone;
-        e.stopPropagation();
+var viewbtns = document.querySelectorAll('#view-btn')
+    var viewPopup = document.querySelector('#viewPopup');
+    viewbtns.forEach(viewbtn => {
+    viewbtn.addEventListener("click", e => {
+    closeAdmissionForm();
+    closeEditContainer();
+    var ID = viewbtn.dataset.id;
+    var firstName = viewbtn.dataset.firstname;
+    var midName = viewbtn.dataset.midname;
+    var surname = viewbtn.dataset.surname;
+    var gender = viewbtn.dataset.gender;
+    var birthdate = viewbtn.dataset.birthdate;
+    var compAddress = viewbtn.dataset.compaddress;
+    var motherName = viewbtn.dataset.mothername;
+    var motherOccupation = viewbtn.dataset.motheroccupation;
+    var fatherName = viewbtn.dataset.fathername;
+    var fatherOccupation = viewbtn.dataset.fatheroccupation;
+    var guardianName = viewbtn.dataset.guardianname;
+    var guardianPhone = viewbtn.dataset.guardianphone;
 
 
-    })
+    viewPopup.style.opacity = "1";
+    viewPopup.style.visibility = "visible";
+
+    document.getElementById('student_id').innerHTML = ID;
+    document.getElementById('student_name').innerHTML = firstName + " " + midName + " " + surname;
+    document.getElementById('student_address').innerHTML = compAddress;
+    document.getElementById('student_gender').innerHTML = gender;
+    document.getElementById('student_birthdate').innerHTML = birthdate;
+    document.getElementById('mother_name').innerHTML = motherName;
+    document.getElementById('mother_occu').innerHTML = motherOccupation;
+    document.getElementById('father_name').innerHTML = fatherName;
+    document.getElementById('father_occu').innerHTML = fatherOccupation;
+    document.getElementById('guardian_name').innerHTML = guardianName;
+    document.getElementById('guardian_phone').innerHTML = guardianPhone;
+    e.stopPropagation();
+
+
+})
 })
 
 document.addEventListener("click", e => {
@@ -269,12 +309,10 @@ document.addEventListener("click", e => {
 })
 
 const form = document.querySelector('.addForm');
-
     form.addEventListener('submit', function(event) {
     event.preventDefault(); 
     
     const formData = new FormData(form);
-    const inputValue = document.getElementById("guardian-phone").value;
     const alertMessage = document.querySelector('.alert');
 
     const studentID = document.getElementById("ID").value;
@@ -310,7 +348,7 @@ const form = document.querySelector('.addForm');
         alertMessage.style.display = "flex";
         alertMessage.innerHTML = "Please fill in the required field";
     }
-    else if (inputValue.length !== 11) {
+    else if (guardianPhone.length !== 11) {
         alertMessage.style.display = "flex";
         alertMessage.innerHTML = "Phone number must be 11 digits long";
         setTimeout(function() {
@@ -342,6 +380,8 @@ const form = document.querySelector('.addForm');
         });
     }
 });
+
+
 
 
 

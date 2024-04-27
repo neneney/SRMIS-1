@@ -1,5 +1,13 @@
 <?php
 include("../php/conn.php");
+session_start();
+
+// Check if the user is not logged in
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: login.php");
+    exit();
+}
 
 
 $sqlMale = "SELECT COUNT(*) AS totalMale FROM students WHERE gender = 'male'";
@@ -41,7 +49,7 @@ $conn->close();
       </div>
       <div class="right-section">
         <i class="fi fi-rr-sign-out-alt"></i>
-        <a href="login.html" class="logout">Logout</a>
+        <a href="logout.php" class="logout">Logout</a>
       </div>
     </div>
 
@@ -49,14 +57,14 @@ $conn->close();
         <div class="top">
             <div class="logo">
                 <i class="bx bxl-codepen"></i>
-                <span>SRMIS</span>
+                <span>IskulRec</span>
             </div>
             <i class="bx bx-menu" id="btn"></i>
         </div>
         <div class="user">
             <img src="../images/user-image.png" class ="user-img" alt="user">
             <div>
-                <p class="bold">User's Name</p>
+                <p class="user-name"><?php echo $_SESSION['full-name']; ?></p>
                 <p class="admin">Admin</p>
             </div>
         </div>
@@ -76,14 +84,14 @@ $conn->close();
                 <span class="tooltip">Students</span>
             </li>
             <li>
-                <a href="add-student.php">
-                    <i class="fi fi-rr-user-add"></i>
-                    <span class="nav-item">Add Students</span>
+            <a href="manage-user.php">
+                    <i class="fi fi-rr-admin-alt"></i>
+                    <span class="nav-item">Users</span>
                 </a>
-                <span class="tooltip">Add Students</span>
+                <span class="tooltip">Users</span>
             </li>
             <li>
-                <a href="#">
+                <a href="logout.php">
                     <i class="fi fi-rr-sign-out-alt"></i>
                     <span class="nav-item">Logout</span>
                 </a>

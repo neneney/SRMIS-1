@@ -1,5 +1,13 @@
 <?php
 include("../php/conn.php");
+session_start();
+
+// Check if the user is not logged in
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    // Redirect to the login page
+    header("Location: login.php");
+    exit();
+}
 
 
 // Check if search term is set and not empty
@@ -78,13 +86,13 @@ $totalStudents = $totalMale + $totalFemale;
 </head>
 <body>
 
-    <div class="header">
+<div class="header">
       <div class="left-section">
-        <a href="dashboard.php" class="">Bureau of Jail Management and Penology</a>
+        <a href="dashboard.php">Bureau of Jail Management and Penology</a>
       </div>
       <div class="right-section">
         <i class="fi fi-rr-sign-out-alt"></i>
-        <a href="login.html" class="logout">Logout</a>
+        <a href="logout.php" class="logout">Logout</a>
       </div>
     </div>
 
@@ -92,14 +100,14 @@ $totalStudents = $totalMale + $totalFemale;
         <div class="top">
             <div class="logo">
                 <i class="bx bxl-codepen"></i>
-                <span>SRMIS</span>
+                <span>IskulRec</span>
             </div>
             <i class="bx bx-menu" id="btn"></i>
         </div>
         <div class="user">
             <img src="../images/user-image.png" class ="user-img" alt="user">
             <div>
-                <p class="bold">User's Name</p>
+                <p class="user-name"><?php echo $_SESSION['full-name']; ?></p>
                 <p class="admin">Admin</p>
             </div>
         </div>
@@ -119,14 +127,14 @@ $totalStudents = $totalMale + $totalFemale;
                 <span class="tooltip">Students</span>
             </li>
             <li>
-                <a href="add-student.php">
-                    <i class="fi fi-rr-user-add"></i>
-                    <span class="nav-item">Add Students</span>
+                <a href="manage-user.php">
+                    <i class="fi fi-rr-admin-alt"></i>
+                    <span class="nav-item">Users</span>
                 </a>
-                <span class="tooltip">Add Students</span>
+                <span class="tooltip">Users</span>
             </li>
             <li>
-                <a href="#">
+                <a href="logout.php">
                     <i class="fi fi-rr-sign-out-alt"></i>
                     <span class="nav-item">Logout</span>
                 </a>
@@ -135,6 +143,7 @@ $totalStudents = $totalMale + $totalFemale;
         </ul>
 
     </div>
+    
     
     <div class="view-popup tw-bg-primary tw-text-white tw-p-20px tw-rounded-md tw-font-sans tw-text-lg" id="viewPopup">
             <div class="flex tw-justify-center tw-items-center"> 
@@ -322,7 +331,7 @@ $totalStudents = $totalMale + $totalFemale;
             <label for="">Phone Number</label>
             <input id = "guardian-phone" name="guardian-phone" type="number" placeholder="Enter Phone Number" required>        
             </div>
-            <div class="alert">Please enter a valid 11-digit phone number.</div>
+            <div class="alert"></div>
             <hr class="tw-mt-4 tw-mb-5">
             <div class="btns">
                 <button class="cancel-btn" type="reset" id="cancel-btn">Cancel</button>
@@ -332,14 +341,14 @@ $totalStudents = $totalMale + $totalFemale;
             </div>
             </div>
 
-        <div class="admission-container">
+        <div class="edit-container">
         <div class="popup editStudent"  id="editContainer">
         <div class="ad-top-section">
             <img src="../images/BJMP_Logo.png" alt="logo" class="bjmp-logo">
-            <h2 id=admission-header>Edit Info</h2>
+            <h2>Edit Info</h2>
         </div>
         <hr class="tw-mt-4 tw-mb-4">
-        <form action="update_student.php" method="post" class="addForm">
+        <form action="update_student.php" method="post" class="editForm">
             <div class="input-area1">
             <label for="">Student ID</label>
             <input name ="edit-ID" type="number" placeholder="Enter Student ID" required>
@@ -393,6 +402,7 @@ $totalStudents = $totalMale + $totalFemale;
             <label for="">Phone Number</label>
             <input name="edit-guardian-phone" type="number" placeholder="Enter Occupation" required>        
             </div>
+            <div class="alert"></div>
             <hr class="tw-mt-4 tw-mb-5">
             <div class="btns">
                 <button class="cancel-btn" type="reset" id="edit-cancel-btn">Cancel</button>

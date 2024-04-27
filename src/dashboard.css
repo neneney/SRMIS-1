@@ -3,12 +3,6 @@ body{
     margin: 0px;
    
 }
-.dashboard-section{
-    background-color: #194a07;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    font-size: 20px;
-}
 .dashboard-content h3{
     text-transform: uppercase;
     font-size: 30px;
@@ -30,7 +24,7 @@ body{
 }
 .mens{
     background-image: url(../images/avatar.png);
-    background-color: lightblue;
+    background-color: #3C5B6F;
     background-size: 110px;
     background-repeat: no-repeat;
     background-position: 20px;
@@ -40,14 +34,14 @@ body{
 }
 .womens{
     background-image: url(../images/woman.png);
-    background-color: lightpink;
+    background-color: #948979;
     background-size: 100px;
     background-repeat: no-repeat;
     background-position: 20px;
 }
 .total{
     background-image: url(../images/student-with-graduation-cap.png);
-    background-color: lightblue;
+    background-color: #3C5B6F;
     background-size: 110px;
     background-repeat: no-repeat;
     background-position: 20px;
