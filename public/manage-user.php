@@ -10,17 +10,16 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
 }
 
 
-
+$searchTerm = "";
 if(isset($_GET['search']) && !empty($_GET['search'])) {
 
     $searchTerm = htmlspecialchars($_GET['search']);
     
 
     $sql = "SELECT * FROM users WHERE 
-            ID LIKE '%$searchTerm%' OR 
-            `full-name` LIKE '%$searchTerm%' OR 
-            username LIKE '%$searchTerm%' OR 
-            `type` LIKE '%$searchTerm%'";
+    ID LIKE '%$searchTerm%' OR 
+    `full-name` LIKE '%$searchTerm%' OR 
+    username LIKE '%$searchTerm%'";
 
     $result = $conn->query($sql);
     
@@ -57,7 +56,7 @@ if ($resultTotal) {
     <link rel="stylesheet" href="../src/navbar.css?v=<?php echo time(); ?>">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../src/tailwind.css">
+    <link rel="stylesheet" href="../src/output.css">
     
     <style>
     [x-cloak] {
@@ -107,14 +106,20 @@ if ($resultTotal) {
                     <span class="nav-item">Students</span>
                 </a>
                 <span class="tooltip">Students</span>
-            </li>
-            <li>
-                <a href="manage-user.php">
-                    <i class="fi fi-rr-admin-alt"></i>
-                    <span class="nav-item">Users</span>
-                </a>
-                <span class="tooltip">Users</span>
-            </li>
+            </li>  
+            <?php
+            if ($_SESSION['user_id'] == 1) {
+                ?>
+                <li>
+                    <a href="manage-user.php">
+                        <i class="fi fi-rr-admin-alt"></i>
+                        <span class="nav-item">Users</span>
+                    </a>
+                    <span class="tooltip">Users</span>
+                </li>
+                <?php
+            }
+            ?>
             <li>
                 <a href="logout.php">
                     <i class="fi fi-rr-sign-out-alt"></i>
@@ -132,9 +137,12 @@ if ($resultTotal) {
         <p class="total">Total number of users: [<?php echo $totalRows?>]</p>  
         <div class="mid-container">
             <div class=" text-box ">
-                <form method="GET">
-                    <input class="search-box" type="search" name="search" placeholder="Search users" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-                </form>
+            <form method="GET">
+            <div class="text-box">
+                <input class="search-box" type="search" name="search" placeholder="Search users" value="<?php echo $searchTerm; ?>">
+            </div>
+            </form>
+
             </div>
            
             <button  id = "add-user-btn" class=" add-user-btn" >
@@ -273,6 +281,15 @@ if ($resultTotal) {
 
     <script src="../js/script.js"></script>
     <script src="../js/manage-user.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var userPage = document.querySelector('.user');
+            userPage.addEventListener('click', function() {
+                window.location.href = "account.php";
+            });
+        });
+    </script>
     
 </body>
 </html>

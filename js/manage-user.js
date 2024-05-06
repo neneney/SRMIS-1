@@ -145,7 +145,6 @@ editForm.addEventListener('submit', function(event) {
             alertMessage.style.display = "none";
         }, 2000); 
     } else {
-        
         fetch('edit_user.php', {
             method: 'POST',
             body: formData

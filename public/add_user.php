@@ -9,24 +9,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     $status = 'unlocked';
 
-    
-    $check_sql = "SELECT * FROM users WHERE username = '$username'";
-    $check_result = $conn->query($check_sql);
-    if ($check_result->num_rows > 0) {
-        
-        echo "Username already taken";
-    } else {
-       
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        $sql = "INSERT INTO users (ID, `full-name`, username, , `password`, `status`) VALUES ('$userID', '$fullName', '$username',  '$hashed_password', '$status')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "User added successfully";
+    try {
+        $check_sql = "SELECT * FROM users WHERE username = '$username'";
+        $check_result = $conn->query($check_sql);
+        if ($check_result->num_rows > 0) {
+            echo "Username already taken";
         } else {
-            // Error inserting record
-            echo "Error: " . $conn->error;
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            $sql = "INSERT INTO users (`ID`, `full-name`, `username`, `password`, `status`) VALUES ('$userID', '$fullName', '$username',  '$hashed_password', '$status')";
+
+            if ($conn->query($sql) === TRUE) {
+                echo "User added successfully";
+            } else {
+                // Error inserting record
+                throw new Exception("Error inserting record: " . $conn->error);
+            }
         }
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
     $conn->close();
 }

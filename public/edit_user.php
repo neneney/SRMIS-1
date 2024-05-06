@@ -6,7 +6,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $userID = $_POST['ID'];
     $fullName = $_POST['full-name'];
     $username = $_POST['username'];
-    
+    $new_username = $_POST['username']; // Add a variable to store the new username
+
     // Check if password fields are not empty
     if (!empty($_POST['password']) && !empty($_POST['confirm-pass'])) {
         $password = $_POST['password'];
@@ -18,7 +19,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $update_password = "";
     }
 
-    $sql = "UPDATE users SET `full-name` = '$fullName', username = '$username' $update_password WHERE ID = '$userID'";
+    // Check if the new username exists in the users table
+    $check_username = "SELECT * FROM users WHERE username = '$new_username' AND ID != '$userID'";
+    $result = $conn->query($check_username);
+
+    if ($result->num_rows > 0) {
+        // New username is already taken
+        echo "username is already taken.";
+        $conn->close();
+        exit();
+    }
+
+    $sql = "UPDATE users SET `full-name` = '$fullName', username = '$new_username' $update_password WHERE ID = '$userID'";
 
     if ($conn->query($sql) === TRUE) {
         echo "User updated successfully";

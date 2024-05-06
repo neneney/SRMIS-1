@@ -13,3 +13,11 @@ btn.onclick = function () {
         main.style.width = 'calc(100% - 80px)';
     }
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    var userPage = document.querySelector('.user');
+    console.log("loaded");
+    userPage.addEventListener('click', function() {
+        window.location.href = "manage-account.php";
+    });
+});

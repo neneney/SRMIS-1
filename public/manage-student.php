@@ -10,38 +10,58 @@ if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
 }
 
 
-// Check if search term is set and not empty
+// Initialize variables
+$searchTerm = "";
+$sort_by = "";
+$sort_query = "";
+
+// Check if the search term is provided
 if(isset($_GET['search']) && !empty($_GET['search'])) {
     // Sanitize the search term
     $searchTerm = htmlspecialchars($_GET['search']);
-    
     // Prepare the SQL statement with a parameterized query to prevent SQL injection
     $sql = "SELECT * FROM students WHERE 
-            ID LIKE '%$searchTerm%' OR 
-            firstName LIKE '%$searchTerm%' OR 
-            midName LIKE '%$searchTerm%' OR 
-            surname LIKE '%$searchTerm%' OR 
-            gender LIKE '%$searchTerm%' OR 
-            guardianPhone LIKE '%$searchTerm%'";
-    
-    // Execute the query
-    $result = $conn->query($sql);
-    
+            ID LIKE ? OR 
+            firstName LIKE ? OR 
+            midName LIKE ? OR 
+            surname LIKE ? OR 
+            gender LIKE ? OR 
+            guardianPhone LIKE ?";
+    // Execute the query with prepared statement
+    $stmt = $conn->prepare($sql);
+    // Bind parameters
+    $searchTermWildcard = "%$searchTerm%";
+    $stmt->bind_param("ssssss", $searchTermWildcard, $searchTermWildcard, $searchTermWildcard, $searchTermWildcard, $searchTermWildcard, $searchTermWildcard);
+    $stmt->execute();
+    $result = $stmt->get_result();
 } else {
     // If search term is not set, fetch all students
     $sql = "SELECT * FROM students";
     $result = $conn->query($sql);
 }
 
-if(isset($_GET['sort_by']) && !empty($_GET['sort_by'])){
-    
+// Check if sort option is provided and not empty
+if(isset($_GET['sort_by']) && !empty($_GET['sort_by'])) {
+    // Sanitize and validate the sort option
+    $sort_by = $_GET['sort_by'];
+    $allowed_sort_options = array("ID", "firstName", "surname");
+    if(in_array($sort_by, $allowed_sort_options)) {
+        // Set the sort query based on the selected option
+        $sort_query = "ORDER BY $sort_by";
+    } else {
+        // Invalid sort option, set default behavior
+        $sort_query = "";
+    }
 }
 
+// If sort query is set, append it to the main SQL query
+if (!empty($sort_query)) {
+    $sql .= " $sort_query";
+    $result = $conn->query($sql);
+}
 
-
-// Check for errors in SQL query
+// Check if query was successful
 if(!$result) {
-    // Handle error (e.g., log it, display an error message)
     echo "Error executing SQL query: " . $conn->error;
 }
 
@@ -75,7 +95,7 @@ $totalStudents = $totalMale + $totalFemale;
     <link rel="stylesheet" href="../src/navbar.css?v=<?php echo time(); ?>">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../src/tailwind.css">
+    <link rel="stylesheet" href="../src/output.css">
     
     <style>
     [x-cloak] {
@@ -88,6 +108,7 @@ $totalStudents = $totalMale + $totalFemale;
 
 <div class="header">
       <div class="left-section">
+      
         <a href="dashboard.php">Bureau of Jail Management and Penology</a>
       </div>
       <div class="right-section">
@@ -107,8 +128,12 @@ $totalStudents = $totalMale + $totalFemale;
         <div class="user">
             <img src="../images/user-image.png" class ="user-img" alt="user">
             <div>
-                <p class="user-name"><?php echo $_SESSION['full-name']; ?></p>
+            <p class="user-name"><?php echo $_SESSION['full-name']; ?></p>
+            <?php if($_SESSION['user_id'] == 1): ?>
                 <p class="admin">Admin</p>
+            <?php else: ?>
+                <p class="admin">User</p>
+            <?php endif; ?>
             </div>
         </div>
         <ul>
@@ -126,14 +151,19 @@ $totalStudents = $totalMale + $totalFemale;
                 </a>
                 <span class="tooltip">Students</span>
             </li>
-            <li>
-                <a href="manage-user.php">
-                    <i class="fi fi-rr-admin-alt"></i>
-                    <span class="nav-item">Users</span>
-                </a>
-                <span class="tooltip">Users</span>
-            </li>
-            <li>
+   <?php
+    if ($_SESSION['user_id'] == 1) {
+        ?>
+        <li>
+            <a href="manage-user.php">
+                <i class="fi fi-rr-admin-alt"></i>
+                <span class="nav-item">Users</span>
+            </a>
+            <span class="tooltip">Users</span>
+        </li>
+        <?php
+    }
+    ?>           <li>
                 <a href="logout.php">
                     <i class="fi fi-rr-sign-out-alt"></i>
                     <span class="nav-item">Logout</span>
@@ -172,6 +202,7 @@ $totalStudents = $totalMale + $totalFemale;
         </div>
 
     <div class="main-content">
+        
         <h3>Students</h3>
         <p class="location"><span class="colored-text">SRMIS / </span>Manage Students</p>
         <p class="total">Total number of students: [<?php echo $totalStudents?>]</p>  
@@ -184,7 +215,7 @@ $totalStudents = $totalMale + $totalFemale;
             <div class="right-btn">
             <form method="get">
                 <select class="tw-bg-emerald-500" name="sort_by" id="sort" onchange="this.form.submit()">
-                    <option value=""> <i class="fi fi-rr-sort-alt"></i> Sort By</option>
+                    <option value=" "> <i class="fi fi-rr-sort-alt"></i> Sort By</option>
                     <option value="ID">Student ID</option>
                     <option value="firstName">First name</option>
                     <option value="surname">Last Name</option>
@@ -416,7 +447,13 @@ $totalStudents = $totalMale + $totalFemale;
 
     <script src="../js/script.js"></script>
     <script src="../js/manage-student.js"></script>
-    
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var userPage = document.querySelector('.user');
+            userPage.addEventListener('click', function() {
+                window.location.href = "account.php";
+            });
+        });
+    </script>
 </body>
 </html>

@@ -64,9 +64,13 @@ $conn->close();
         <div class="user">
             <img src="../images/user-image.png" class ="user-img" alt="user">
             <div>
-                <p class="user-name"><?php echo $_SESSION['full-name']; ?></p>
-                <p class="admin">Admin</p>
-            </div>
+            <p class="user-name"><?php echo $_SESSION['full-name']; ?></p>
+            <?php if($_SESSION['user_id'] == 1): ?>
+                <p class="admin tw-text-center">Admin</p>
+            <?php else: ?>
+                <p class="admin">User</p>
+            <?php endif; ?>
+        </div>
         </div>
         <ul>
             <li>
@@ -83,13 +87,20 @@ $conn->close();
                 </a>
                 <span class="tooltip">Students</span>
             </li>
-            <li>
-            <a href="manage-user.php">
-                    <i class="fi fi-rr-admin-alt"></i>
-                    <span class="nav-item">Users</span>
-                </a>
-                <span class="tooltip">Users</span>
-            </li>
+            <?php
+            // Check if the ID number in the session is 1
+            if ($_SESSION['user_id'] == 1) {
+                ?>
+                <li>
+                    <a href="manage-user.php">
+                        <i class="fi fi-rr-admin-alt"></i>
+                        <span class="nav-item">Users</span>
+                    </a>
+                    <span class="tooltip">Users</span>
+                </li>
+                <?php
+            }
+            ?>
             <li>
                 <a href="logout.php">
                     <i class="fi fi-rr-sign-out-alt"></i>
@@ -104,7 +115,7 @@ $conn->close();
     <div class="main-content">
       <h1>Dashboard</h1>
       <hr>
-      <h3>Student Record Mangement Information System</h3>
+      <h3>IskulRec: Student Record Mangement Information System</h3>
       <div class="numbers">
         <div class="mens">
           <p class="digit"><?php echo $totalMale ?></p>
@@ -124,5 +135,13 @@ $conn->close();
       </div>
     </div>
     <script src="../js/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var userPage = document.querySelector('.user');
+            userPage.addEventListener('click', function() {
+                window.location.href = "account.php";
+            });
+        });
+    </script>
 </body>
 </html>

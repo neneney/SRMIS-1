@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./src/tailwind.css --watch"
+    "build": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "daisyui": "^4.10.2",
+    "daisyui": "^4.10.5",
+    "install": "^0.13.0",
     "tailwindcss": "^3.4.3"
   }
 }
