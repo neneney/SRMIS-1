@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2024 at 04:46 PM
+-- Generation Time: May 06, 2024 at 04:55 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,6 +20,38 @@ SET time_zone = "+00:00";
 --
 -- Database: `stud_rec`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `students`
+--
+
+CREATE TABLE `students` (
+  `ID` int(11) NOT NULL,
+  `firstName` text NOT NULL,
+  `midName` text NOT NULL,
+  `surname` text NOT NULL,
+  `gender` text NOT NULL,
+  `birthdate` date NOT NULL,
+  `compAddress` text NOT NULL,
+  `motherName` varchar(255) NOT NULL,
+  `motherOccupation` varchar(255) NOT NULL,
+  `fatherName` varchar(255) NOT NULL,
+  `fatherOccupation` varchar(255) NOT NULL,
+  `guardianName` varchar(255) NOT NULL,
+  `guardianPhone` text NOT NULL,
+  `remarks` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `students`
+--
+
+INSERT INTO `students` (`ID`, `firstName`, `midName`, `surname`, `gender`, `birthdate`, `compAddress`, `motherName`, `motherOccupation`, `fatherName`, `fatherOccupation`, `guardianName`, `guardianPhone`, `remarks`) VALUES
+(1, 'Ryniel', 'Mark', 'Lovino', 'Male', '2024-05-08', 'Blk53 Lot12 Bella vista subdivision', 'Asd', 'Asd', 'Asda', 'Adas', 'Aasda', '09164660950', ''),
+(7888, 'Ryniel', 'Mark', 'Lovino', 'Male', '2024-05-22', 'Blk53 Lot12 Bella vista subdivision', 'Rh;asd', 'ASDAS', 'ADASD', 'ASDA', 'ASDAD', '09164660950', ''),
+(123123, 'Ed', 'Ere', 'Adsad', 'Male', '2024-05-09', 'Blk53 Lot12 Bella vista subdivision', 'Asdsa', 'Asd', 'Asda', 'Asdas', 'Asda', '09164660950', '');
 
 -- --------------------------------------------------------
 
@@ -53,6 +85,12 @@ INSERT INTO `users` (`ID`, `full-name`, `username`, `password`, `status`) VALUES
 --
 
 --
+-- Indexes for table `students`
+--
+ALTER TABLE `students`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -61,6 +99,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `students`
+--
+ALTER TABLE `students`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
 
 --
 -- AUTO_INCREMENT for table `users`
